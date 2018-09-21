@@ -13,7 +13,6 @@ public class WeatherController {
 
     public static final String GOOGLE_API_KEY = "AIzaSyD4Ydc-Uq0N1Tnl9bQZFI0mhK3vcko_5Yk";
 
-
     @GetMapping
     public String getWeather() throws IOException {
         WeatherHandler osloWeather = new WeatherHandler("59.93","10.75");
@@ -22,6 +21,11 @@ public class WeatherController {
         WeatherHandler kristiansandWeather = new WeatherHandler("58.15","7.93");
         WeatherHandler stavangerWeather = new WeatherHandler("58.94","5.61");
 
+        String[] todaysIcons = {osloWeather.getTodaySymbolNumber(),
+                bergenWeather.getTodaySymbolNumber(),
+                trondheimWeather.getTodaySymbolNumber(),
+                kristiansandWeather.getTodaySymbolNumber(),
+                stavangerWeather.getTodaySymbolNumber()};
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<html>");
@@ -32,27 +36,19 @@ public class WeatherController {
         stringBuilder.append("<body>");
         stringBuilder.append("<div id=\"map\"></div>" +
                 "<script>" +
-                "function getWeatherInfoFromApi() {" +
-                    /*
-                    //Have to write some request logic to the weather API here
-                    */
-
-                    //Returning the neccesary weather info
-                    //This is just a hardcoded version of the values we have to get from the weather API
-                    "var weatherInfo = [\"sun\", \"rain\", \"sun\", \"cloud\", \"rain\"];" +
-                    "return weatherInfo;" +
-                "}" +
 
                 //Passing the weather values to a global variable
                 "var weatherFromApi = getWeatherInfoFromApi();" +
 
                 "function initMap() {" +
-                    //Creating a JS object that contains the various weather icon links
-                    "var iconUrl = \"https://api.met.no/weatherapi/weathericon/1.1/?symbol=\";" +
-                    "var icons = {" +
-                    "sun: {icon: iconUrl + \"1&content_type=image/png\"}," +
-                    "cloud: {icon: iconUrl + \"4&content_type=image/png\"}," +
-                    "rain: {icon: iconUrl + \"10&content_type=image/png\"} };" +
+                    //Setting up the icon url's
+                    "var weatherIcons = [" +
+                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[0] + "&content_type=image/png'," +
+                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[1] + "&content_type=image/png'," +
+                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[2] + "&content_type=image/png'," +
+                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[3] + "&content_type=image/png'," +
+                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[4] + "&content_type=image/png'" +
+                    "];" +
 
                     //Creating the positions to place the weather symbols
                     "var cities = [new google.maps.LatLng(59.93, 10.75)," +
@@ -66,18 +62,9 @@ public class WeatherController {
 
                     //Setting up the marker positions with the right kind of weather icon
                     "for(i = 0; i < cities.length; i++) {" +
-                        "var weatherIcon = null;" +
-                        "if(weatherFromApi[i] === \"sun\") {" +
-                            "weatherIcon = weatherFromApi[i];" +
-                        "} else if(weatherFromApi[i] === \"cloud\") {" +
-                            "weatherIcon = weatherFromApi[i];" +
-                        "} else {" +
-                            "weatherIcon = weatherFromApi[i];" +
-                        "}" +
-
                         "var marker = new google.maps.Marker({" +
                             "position: cities[i]," +
-                            "icon: icons[weatherIcon][\"icon\"]," +
+                            "icon: weatherIcons[i]," +
                             "map: map" +
                         "});" +
                     "}" +
