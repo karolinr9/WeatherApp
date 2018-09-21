@@ -4,18 +4,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
 
+
     public static final String GOOGLE_API_KEY = "AIzaSyD4Ydc-Uq0N1Tnl9bQZFI0mhK3vcko_5Yk";
 
+
     @GetMapping
-    public String getWeather(){
+    public String getWeather() throws IOException {
+        WeatherHandler osloWeather = new WeatherHandler("45","45");
+        WeatherHandler bergenWeather = new WeatherHandler("45","45");
+        WeatherHandler trondheimWeather = new WeatherHandler("45","45");
+        WeatherHandler kristiansandWeather = new WeatherHandler("45","45");
+        WeatherHandler stavangerWeather = new WeatherHandler("45","45");
+
 
         StringBuilder stringBuilder = new StringBuilder();
-        //Oslo 59.9303104,10.7555997
-        //bergen 60.3879362,5.3220906
         stringBuilder.append("<html>");
         stringBuilder.append("<head>" +
                 "<title>Weather App</title>" +
