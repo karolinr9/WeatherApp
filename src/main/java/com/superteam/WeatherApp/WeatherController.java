@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/weather")
+@RequestMapping("/")
 public class WeatherController {
 
 
@@ -16,11 +16,11 @@ public class WeatherController {
 
     @GetMapping
     public String getWeather() throws IOException {
-        WeatherHandler osloWeather = new WeatherHandler("45","45");
-        WeatherHandler bergenWeather = new WeatherHandler("45","45");
-        WeatherHandler trondheimWeather = new WeatherHandler("45","45");
-        WeatherHandler kristiansandWeather = new WeatherHandler("45","45");
-        WeatherHandler stavangerWeather = new WeatherHandler("45","45");
+        WeatherHandler osloWeather = new WeatherHandler("59.93","10.75");
+        WeatherHandler bergenWeather = new WeatherHandler("60.38","5.32");
+        WeatherHandler trondheimWeather = new WeatherHandler("63.41","10.36");
+        WeatherHandler kristiansandWeather = new WeatherHandler("58.15","7.93");
+        WeatherHandler stavangerWeather = new WeatherHandler("58.94","5.61");
 
 
         StringBuilder stringBuilder = new StringBuilder();
