@@ -123,6 +123,7 @@ public class WeatherController {
         stringBuilder.append("<input type=\"button\" value = \"Change day\" onClick=\"changeDay()\">");
 
         stringBuilder.append("<p id=\"day\">Today</p>");
+        stringBuilder.append("<p>Group members: Kenneth, Håvard, Karoline</p>");
 
         stringBuilder.append("</body></html>");
 
