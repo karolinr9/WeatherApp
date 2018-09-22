@@ -27,6 +27,14 @@ public class WeatherController {
                 kristiansandWeather.getTodaySymbolNumber(),
                 stavangerWeather.getTodaySymbolNumber()};
 
+        String[] tomorrowsIcons = {osloWeather.getTomorrowSymbolNumber(),
+                bergenWeather.getTomorrowSymbolNumber(),
+                trondheimWeather.getTomorrowSymbolNumber(),
+                kristiansandWeather.getTomorrowSymbolNumber(),
+                stavangerWeather.getTomorrowSymbolNumber()};
+
+
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<html>");
         stringBuilder.append("<head>" +
@@ -36,19 +44,56 @@ public class WeatherController {
         stringBuilder.append("<body>");
         stringBuilder.append("<div id=\"map\"></div>" +
                 "<script>" +
+                "var today = true;" +
+                "var markerArray=[];" +
+
+                "function changeDay(){" +
+                "today = !today;" +
+                "setIcons();" +
+                "if(today){" +
+                    "document.getElementById(\"day\").innerHTML=\"Today\";" +
+                "}" +
+                "else{" +
+                    "document.getElementById(\"day\").innerHTML=\"Tomorrow\";" +
+                "}" +
+
+                "}" +
+
+
+                "function setIcons(){" +
+                //Sets the weather icons depending on whether or not it is showing today or tomorrow
+                    "if(today){" +
+                        "weatherIcons = [" +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[0] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[1] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[2] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[3] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[4] + "&content_type=image/png'" +
+                        "];" +
+                    "}" +
+                    "else{" +
+                        "weatherIcons = [" +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + tomorrowsIcons[0] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + tomorrowsIcons[1] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + tomorrowsIcons[2] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + tomorrowsIcons[3] + "&content_type=image/png'," +
+                        "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + tomorrowsIcons[4] + "&content_type=image/png'" +
+                        "];" +
+                    "}" +
+                    "for(i = 0; i < markerArray.length; i++) {" +
+                        "markerArray[i].setIcon(weatherIcons[i])" +
+
+                    "}" +
+                "}" +
 
                 //Passing the weather values to a global variable
                 "var weatherFromApi = getWeatherInfoFromApi();" +
 
+                "var weatherIcons;" +
+
                 "function initMap() {" +
                     //Setting up the icon url's
-                    "var weatherIcons = [" +
-                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[0] + "&content_type=image/png'," +
-                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[1] + "&content_type=image/png'," +
-                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[2] + "&content_type=image/png'," +
-                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[3] + "&content_type=image/png'," +
-                    "'https://api.met.no/weatherapi/weathericon/1.1/?symbol=" + todaysIcons[4] + "&content_type=image/png'" +
-                    "];" +
+                    "setIcons();" +
 
                     //Creating the positions to place the weather symbols
                     "var cities = [new google.maps.LatLng(59.93, 10.75)," +
@@ -67,13 +112,17 @@ public class WeatherController {
                             "icon: weatherIcons[i]," +
                             "map: map" +
                         "});" +
+                        //Adding markers to an array so they can be updated later
+                        "markerArray.push(marker);" +
                     "}" +
                 "}" +
                 "</script>" +
 
                 "<script async defer src=\"https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_API_KEY + "&callback=initMap\"></script>");
 
-        stringBuilder.append("<h1>Winter is coming soon</h1>");
+        stringBuilder.append("<input type=\"button\" value = \"Change day\" onClick=\"changeDay()\">");
+
+        stringBuilder.append("<p id=\"day\">Today</p>");
 
         stringBuilder.append("</body></html>");
 
